@@ -1,16 +1,14 @@
 module.exports = {
-  'hostname'    : 'PLEX_LOCAL_IP',
-  'port'        : 'PLEX_LOCAL_PORT',
-  'username'    : 'PLEX_USERNAME',
-  'password'    : 'PLEX_PASSWORD',
-  'token'       : 'PLEX_TOKEN',
-  'machineId'   : 'PLEX_MACHINEID',
-  'managedUser' : 'PLEX_MANAGED_USERNAME',
+  'hostname'    : process.env.PLEX_LOCAL_IP,
+  'port'        : process.env.PLEX_LOCAL_PORT,
+  'https'       : true,
+  'username'    : process.env.PLEX_USERNAME,
+  'password'    : process.env.PLEX_PASSWORD,
   'options'     : {
-    'identifier': 'APP_IDENTIFIER',
-    'product'   : 'APP_PRODUCT_NAME',
-    'version'   : 'APP_VERSION_NUMBER',
-    'deviceName': 'APP_DEVICE_NAME',
+    'identifier': process.env.PLEX_USERNAME + '-Discord-Bot',
+    'product'   : 'Plex Discord Bot',
+    'version'   : '1.0.0',
+    'deviceName': 'Node.js App',
     'platform'  : 'Discord',
     'device'    : 'Discord'
   }

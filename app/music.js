@@ -7,14 +7,14 @@ module.exports = function(client) {
     console.log('bot ready');
     console.log('logged in as: ' + client.user.tag);
 
-    plexCommands['plexTest'].process();
+    plexCommands['plextest'].process();
   });
 
   // when message is sent to discord
   client.on('message', function(message){
     var msg = message.content.toLowerCase();
-    if (msg.startsWith('!')){
-      var cmdTxt = msg.split(" ")[0].substring("-".length, msg.length);
+    if (msg.startsWith(process.env.COMMAND_MESSAGE_PREFIX)){
+      var cmdTxt = msg.split(" ")[0].substring(process.env.COMMAND_MESSAGE_PREFIX.length, msg.length);
       var query = msg.substring(msg.indexOf(' ')+1);
       var cmd = plexCommands[cmdTxt];
 
@@ -27,7 +27,7 @@ module.exports = function(client) {
         }
       }
       else {
-        message.reply('**Sorry, that\'s not a command.**');
+        message.reply('**Sorry, that\'s not a command.**\nDebug info:\ncmdText: ' + cmdTxt + "\nquery: " + query + "\ncmd: " + cmd);
       }
 
     }

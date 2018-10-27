@@ -1,6 +1,6 @@
 # Plex Discord Bot
 
-## Installation
+## Installation (Needs Updating)
 
 1. Install Node.js: https://nodejs.org/
 2. If using Windows, I generally install Cmder as a console emulator to avoid issues: http://cmder.net/
@@ -42,7 +42,7 @@ If I am missing any steps, feel free to reach out or open  an issue/bug in the I
 
 ## Commands
 
-* `!plexTest` : a test to see make sure your Plex server is connected properly
+* `!plextest` : a test to see make sure your Plex server is connected properly
 * `!clearqueue` : clears all songs in queue
 * `!nextpage` : get next page of songs if desired song is not listed
 * `!pause` : pauses current song if one is playing
@@ -108,6 +108,6 @@ return api.query({ uri: '/', extraHeaders: { 'X-TEST-HEADER': 'X-TEST-HEADER-VAL
 
 ## Completed:
 * [x] handle case where user types `!play` when another song is playing
-* [x] make code look less shitty
+* [x] make code look less bad
 * [x] fix !stop again
 * [x] make playlists

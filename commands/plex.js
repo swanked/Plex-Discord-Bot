@@ -13,10 +13,10 @@ var plex = new PlexAPI({
   port: plexConfig.port,
   username: plexConfig.username,
   password: plexConfig.password,
-  token: plexConfig.token,
+  //token: plexConfig.token,
   options: {
-    identifier: 'PlexBot',
-    product: plexConfig.options.identifier,
+    identifier: plexConfig.options.identifier,
+    product: plexConfig.options.product,
     version: plexConfig.options.version,
     deviceName: plexConfig.options.deviceName,
     platform: plexConfig.options.platform,
@@ -25,8 +25,9 @@ var plex = new PlexAPI({
 });
 
 // plex constants ------------------------------------------------------------
+console.log('Plex Token Test: ' + plex.authToken);
 const PLEX_PLAY_START = 'http://' + plexConfig.hostname + ':' + plexConfig.port;
-const PLEX_PLAY_END = '?X-Plex-Token=' + plexConfig.token;
+const PLEX_PLAY_END = '?X-Plex-Token=' + plex.authToken;
 
 // plex variables ------------------------------------------------------------
 var tracks = null;
@@ -71,15 +72,16 @@ function findSong(query, offset, pageSize, message) {
         }
         messageLines += (t+1) + ' - ' + artist + ' - ' + tracks[t].title + '\n';
       }
-      messageLines += '\n***!playsong (number)** to play your song.*';
-      messageLines += '\n***!nextpage** if the song you want isn\'t listed*';
+      messageLines += '\n***' + process.env.COMMAND_MESSAGE_PREFIX + 'playsong (number)** to play your song.*';
+      messageLines += '\n***' + process.env.COMMAND_MESSAGE_PREFIX + 'nextpage** if the song you want isn\'t listed*';
       message.reply(messageLines);
     }
     else {
       message.reply('** I can\'t find a song with that title.**');
     }
   }, function (err) {
-    console.log('narp');
+    console.log('Plex is currently unavailable. ' + err);
+    message.reply("** Something went wrong connecting to Plex, please try again later. **")
   });
 }
 
@@ -98,7 +100,7 @@ function addToQueue(songNumber, tracks, message) {
 
     songQueue.push({'artist' : artist, 'title': title, 'key': key});
     if (songQueue.length > 1) {
-      message.reply('You have added **' + artist + ' - ' + title + '** to the queue.\n\n***!viewqueue** to view the queue.*');
+      message.reply('You have added **' + artist + ' - ' + title + '** to the queue.\n\n***' + process.env.COMMAND_MESSAGE_PREFIX + 'viewqueue** to view the queue.*');
     }
 
     if (!isPlaying) {
@@ -175,7 +177,7 @@ function playbackCompletion(message) {
 
 // plex commands -------------------------------------------------------------
 var commands = {
-  'plexTest' : {
+  'plextest' : {
     usage: '',
     description: 'test plex at bot start up to make sure everything is working',
     process: function() {
@@ -183,7 +185,7 @@ var commands = {
         console.log('name: ' + result.MediaContainer.friendlyName);
         console.log('v: ' + result.MediaContainer.version);
       }, function(err) {
-        console.log('ya done fucked up');
+        console.log('Plex has errored, the world is now on fire.' + err);
       });
     }
   },
@@ -281,7 +283,7 @@ var commands = {
   },
   'resume' : {
     usage: '',
-    description: 'skips the current song if one is playing and plays the next song in queue if it exists',
+    description: 'resume playback of the current song if one is playing',
     process: function(client, message) {
       if (isPaused) {
 
@@ -346,8 +348,8 @@ var commands = {
           messageLines += (t+1) + ' - ' + songQueue[t].artist + ' - ' + songQueue[t].title + '\n';
         }
 
-        messageLines += '\n***!removesong (number)** to remove a song*';
-        messageLines += '\n***!skip** to skip the current song*';
+        messageLines += '\n***' + process.env.COMMAND_MESSAGE_PREFIX + 'removesong (number)** to remove a song*';
+        messageLines += '\n***' + process.env.COMMAND_MESSAGE_PREFIX + 'skip** to skip the current song*';
 
         var embedObj = {
           embed: {
