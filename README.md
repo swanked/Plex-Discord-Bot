@@ -2,7 +2,7 @@
 
 ## Installation
 
-Look at either the [more automatic](docs/Setup_Docker) or the [more manual](docs/Setup) setup instructions.
+Look at either the [more automatic](docs/Setup_Docker.md) or the [more manual](docs/Setup.md) setup instructions.
 
 If I am missing any steps, feel free to reach out or open an issue/bug in the Issues for this repository.
 
