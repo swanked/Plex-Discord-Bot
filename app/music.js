@@ -13,7 +13,7 @@ module.exports = function(client) {
   // when message is sent to discord
   client.on('message', function(message){
     var msg = message.content.toLowerCase();
-    if (msg.startsWith(process.env.COMMAND_MESSAGE_PREFIX)){
+    if (msg.startsWith(process.env.COMMAND_MESSAGE_PREFIX) && !message.author.bot){
       var cmdTxt = msg.split(" ")[0].substring(process.env.COMMAND_MESSAGE_PREFIX.length, msg.length);
       var query = msg.substring(msg.indexOf(' ')+1);
       var cmd = plexCommands[cmdTxt];

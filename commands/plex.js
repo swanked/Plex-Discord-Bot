@@ -7,6 +7,9 @@ var plexConfig = require('../config/plex');
 // plex commands -------------------------------------------------------------
 var plexCommands = require('../commands/plex');
 
+// Util functions ------------------------------------------------------------
+require('util');
+
 // plex client ---------------------------------------------------------------
 var plex = new PlexAPI({
   hostname: plexConfig.hostname,
@@ -24,11 +27,6 @@ var plex = new PlexAPI({
   }
 });
 
-// plex constants ------------------------------------------------------------
-console.log('Plex Token Test: ' + plex.authToken);
-const PLEX_PLAY_START = 'http://' + plexConfig.hostname + ':' + plexConfig.port;
-const PLEX_PLAY_END = '?X-Plex-Token=' + plex.authToken;
-
 // plex variables ------------------------------------------------------------
 var tracks = null;
 var plexQuery = null;
@@ -44,6 +42,11 @@ var voiceChannel = null;
 var conn = null;
 
 // plex functions ------------------------------------------------------------
+
+// Combine the start and end of a Plex play url around what's in the middle.
+function createPlexPlayUrl(middle) {
+  return 'http://' + plexConfig.hostname + ':' + plexConfig.port + middle + '?X-Plex-Token=' + plex.authToken;
+}
 
 // find song when provided with query string, offset, pagesize, and message
 function findSong(query, offset, pageSize, message) {
@@ -120,8 +123,8 @@ function playSong(message) {
   if (voiceChannel) {
     voiceChannel.join().then(function(connection) {
       conn = connection;
-      var url = PLEX_PLAY_START + songQueue[0].key + PLEX_PLAY_END;
-
+      var url = createPlexPlayUrl(songQueue[0].key);
+      
       isPlaying = true;
 
       dispatcher = connection.playArbitraryInput(url).on('end', () => {

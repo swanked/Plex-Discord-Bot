@@ -8,7 +8,7 @@ module.exports = {
     'identifier': process.env.PLEX_USERNAME + '-Discord-Bot',
     'product'   : 'Plex Discord Bot',
     'version'   : '1.0.0',
-    'deviceName': 'Node.js App',
+    'deviceName': 'Discord Bot',
     'platform'  : 'Discord',
     'device'    : 'Discord'
   }
