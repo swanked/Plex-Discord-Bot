@@ -1,3 +1,8 @@
+// sanity check env ------------------------------------------------------------
+if (typeof process.env.COMMAND_MESSAGE_PREFIX == "undefined") {
+    process.env.COMMAND_MESSAGE_PREFIX = "!";
+}
+
 // packages --------------------------------------------------------------------
 const Discord = require('discord.js');
 
