@@ -27,7 +27,7 @@ module.exports = function(client) {
         }
       }
       else {
-        message.reply('**Sorry, that\'s not a command.**\nDebug info:\ncmdText: ' + cmdTxt + "\nquery: " + query + "\ncmd: " + cmd);
+        message.reply('**Sorry, that\'s not a command.**');
       }
 
     }
