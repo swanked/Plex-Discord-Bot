@@ -180,21 +180,9 @@ function playbackCompletion(message) {
 
 // plex commands -------------------------------------------------------------
 var commands = {
-  'plextest' : {
-    usage: '',
-    description: 'Test plex connection to make sure everything is working',
-    process: function() {
-      plex.query('/').then(function(result) {
-        console.log('name: ' + result.MediaContainer.friendlyName);
-        console.log('v: ' + result.MediaContainer.version);
-      }, function(err) {
-        console.log('Plex has errored, the world is now on fire.' + err);
-      });
-    }
-  },
   'clearqueue' : {
     usage: '',
-    description: 'Clears all songs in queue',
+    description: 'Clears all songs in queue.',
     process: function(client, message) {
       if (songQueue.length > 0) {
         songQueue = []; // remove all songs from queue
@@ -206,16 +194,27 @@ var commands = {
       }
     }
   },
+  'commands' : {
+    usage: '',
+    description: 'Displays a list of all of the commands.',
+    process: function(client, message) {
+      helpMessage = "here are all of the available commands:";
+      for(var key in commands) {
+        helpMessage += "\n**" + process.env.COMMAND_MESSAGE_PREFIX + key + "**:\n\tUsage: " + process.env.COMMAND_MESSAGE_PREFIX + key + " " + commands[key].usage + "\n\t Description: " + commands[key].description;
+      };
+      message.reply(helpMessage);
+    }
+  },
   'nextpage' : {
     usage: '',
-    description: 'Get next page of songs if desired song not listed',
+    description: 'Get next page of songs if the desired song is not listed.',
     process: function(client, message, query) {
       findSong(plexQuery, plexOffset, plexPageSize, message);
     }
   },
   'pause' : {
     usage: '',
-    description: 'Pauses current song if one is playing',
+    description: 'Pauses current song if one is playing.',
     process: function(client, message) {
       if (isPlaying) {
         dispatcher.pause(); // pause song
@@ -235,7 +234,7 @@ var commands = {
   },
   'play' : {
     usage: '<song title or artist>',
-    description: 'Bot will join voice channel and play song if one song available. If more than one song matches, bot will return a list to choose from',
+    description: 'The bot will join voice channel and play song if one song available. If more than one song matches, the bot will return a list to choose from.',
     process: function(client, message, query) {
       // if song request exists
       if (query.length > 0) {
@@ -251,7 +250,7 @@ var commands = {
   },
   'playsong' : {
     usage: '<song number>',
-    description: 'Play a song from the generated song list',
+    description: 'Play a song from the generated song list.',
     process: function(client, message, query) {
       var songNumber = query;
       songNumber = parseInt(songNumber);
@@ -260,9 +259,21 @@ var commands = {
       addToQueue(songNumber, tracks, message);
     }
   },
+  'plextest' : {
+    usage: '',
+    description: 'Test plex connection to make sure everything is working. Doesn\'t post to chat.',
+    process: function() {
+      plex.query('/').then(function(result) {
+        console.log('name: ' + result.MediaContainer.friendlyName);
+        console.log('v: ' + result.MediaContainer.version);
+      }, function(err) {
+        console.log('Plex has errored, the world is now on fire.' + err);
+      });
+    }
+  },
   'removesong' : {
     usage: '<song queue number>',
-    description: 'Removes song by index from the song queue',
+    description: 'Removes song by index from the song queue.',
     process: function(client, message, query) {
       var songNumber = query;
       songNumber = parseInt(songNumber);
@@ -286,7 +297,7 @@ var commands = {
   },
   'resume' : {
     usage: '',
-    description: 'Resume playback of the current song if one is playing',
+    description: 'Resume playback of the current song if one is playing.',
     process: function(client, message) {
       if (isPaused) {
 
@@ -306,7 +317,7 @@ var commands = {
   },
   'skip' : {
     usage: '',
-    description: 'Skips the current song if one is playing and plays the next song in queue if it exists',
+    description: 'Skips the current song if one is playing and plays the next song in queue if it exists.',
     process: function(client, message) {
       if (isPlaying) {
         message.channel.send(songQueue[0].artist + ' - ' + songQueue[0].title + ' has been **skipped.**');
@@ -319,7 +330,7 @@ var commands = {
   },
   'stop' : {
     usage: '',
-    description: 'Stops song if one is playing',
+    description: 'Stops the current song if one is playing.',
     process: function(client, message) {
       if (isPlaying) {
         songQueue = []; // removes all songs from queue
@@ -340,7 +351,7 @@ var commands = {
   },
   'viewqueue' : {
     usage: '',
-    description: 'Displays current song queue',
+    description: 'Displays current song queue.',
     process: function(client, message) {
       //var messageLines = '\n**Song Queue:**\n\n';
 
@@ -368,17 +379,6 @@ var commands = {
       }
     }
   },
-  'commands' : {
-    usage: '',
-    description: 'Displays a list of all commands',
-    process: function(client, message) {
-      helpMessage = "All available commands:\n";
-      commands.forEach(element => {
-        helpMessage += "**" + process.env.COMMAND_MESSAGE_PREFIX + element + "**:\n\tUsage: " + process.env.COMMAND_MESSAGE_PREFIX + element + " " + element.usage + "\n\t Description: " + element.description + "\n";
-      });
-      message.reply("")
-    }
-  }
 };
 
 module.exports = commands;
