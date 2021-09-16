@@ -26,6 +26,6 @@ jobs:
         # Log out from the Docker registry at the end of a job
         logout: true
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag plex-discord-bot:$TAG_VERSION --tag plex-discord-bot:latest
+      run: docker build . --file Dockerfile --tag plex-discord-bot:${{TAG_VERSION}} --tag plex-discord-bot:latest
     - name: Docker Push
       run: docker push --all-tags
