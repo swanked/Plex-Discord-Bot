@@ -8,7 +8,8 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-
+    env:
+      TAG_VERSION: $(date +%s)
     steps:
     - uses: actions/checkout@v2
     - name: Docker Login
@@ -25,11 +26,6 @@ jobs:
         # Log out from the Docker registry at the end of a job
         logout: true
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+      run: docker build . --file Dockerfile --tag plex-discord-bot:$TAG_VERSION --tag plex-discord-bot:latest
     - name: Docker Push
-      run: docker push ${{secrets.DOCKER_USERNAME}}/plex-discord-bot
-    - name: Docker Logout
-      run: docker logout
-
-
-
+      run: docker push --all-tags
