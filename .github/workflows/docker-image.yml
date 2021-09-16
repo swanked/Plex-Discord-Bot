@@ -26,4 +26,4 @@ jobs:
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag plex-discord-bot:$(date +%s) --tag plex-discord-bot:latest
     - name: Docker Push
-      run: docker push --all-tags
+      run: docker push --all-tags ${{secrets.DOCKER_USERNAME}}/plex-discord-bot
